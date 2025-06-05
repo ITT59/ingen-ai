@@ -53,7 +53,45 @@ app.post("/api/register", (req, res) => {
 });
 
 
+app.post("/api/rediger", (req, res) => {
+    const {ID_undervisning, klasse, fag, tid, beskrivelse} = req.body;
+    const sql = `UPDATE Undervisning SET Klasse = ?, Fag = ?, Tid = ?, Beskrivelse = ? WHERE ID_undervisning = ?`;
+    db.run (sql, [klasse, fag, tid, beskrivelse, ID_undervisning], function(err){
+        if (err) {
+            console.error("Databasefeil", err.message);
+        }
+        res.redirect("/");
+    });
+});
+
+app.post("/api/slett", (req, res) => {
+    const {ID_undervisning,} = req.body;
+    const sql = `DELETE FROM Undervisning WHERE ID_undervisning = ?`;
+    db.run (sql, [ID_undervisning], function(err){
+        if (err) {
+            console.error("Databasefeil", err.message);
+        }
+        res.redirect("/");
+    });
+});
+
+
 app.get("/api/se", (req, res) => {
+    const sql = "SELECT * FROM Undervisning";
+
+    db.all(sql, [], (err, rows) =>{
+        if(err) {
+            console.error("Databasefeil", err.message);
+            
+        }
+        else {
+            res.json(rows);
+        }
+    });
+});
+
+app.get("/api/se?klasse", (req, res) => {
+    const klasse = req.query.klasse
     const sql = "SELECT * FROM Undervisning";
 
     db.all(sql, [], (err, rows) =>{

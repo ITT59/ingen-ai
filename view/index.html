@@ -16,6 +16,86 @@
         </header>
         <main>
             Forside
+
+            <script defer>
+                async function lesUnd() {
+                    const response = await fetch("/api/se");
+                    const økter = await response.json();
+                    const main = document.querySelector("main")
+
+                    økter.forEach((økt) => {
+                       const form = document.createElement("form");
+                       main.appendChild(form);
+                       form.action = "/api/rediger";
+                       form.method = "POST";
+
+                       const id = document.createElement("input");
+                       id.type = "hidden";
+                       id.name = "ID_undervisning";
+                       id.value = økt.ID_undervisning;
+                       
+                       const klasseLabel = document.createElement("label");
+                       klasseLabel.innerText = "klasse: "
+                       klasseLabel.for = "klasse";
+                       const klasse = document.createElement("input");
+                       klasse.type = "text";
+                       klasse.name = "klasse";
+                       klasse.value = økt.Klasse;
+                       klasse.placeholder = økt.Klasse;
+
+                        const fagLabel = document.createElement("label");
+                       fagLabel.innerText = "fag: "
+                       fagLabel.for = "fag";
+                       const fag = document.createElement("input");
+                       fag.type = "text";
+                       fag.name = "fag";
+                       fag.value = økt.Fag;
+                       fag.placeholder = økt.Fag;
+
+                       
+                        const tidLabel = document.createElement("label");
+                       tidLabel.innerText = "tid: "
+                       tidLabel.for = "tid";
+                       const tid = document.createElement("input");
+                       tid.type = "time";
+                       tid.name = "tid";
+                       tid.value = økt.Tid;
+                       tid.placeholder = økt.Tid;
+
+                          const beskrivelseLabel = document.createElement("label");
+                       beskrivelseLabel.innerText = "Beskrivelse: "
+                       beskrivelseLabel.for = "beskrivelse";
+                       const beskrivelse = document.createElement("textarea");
+                       beskrivelse.name = "beskrivelse";
+                       beskrivelse.value = økt.Beskrivelse;
+                       beskrivelse.placeholder = økt.Beskrivelse;
+
+                        const sub = document.createElement("button");
+                        sub.type = "submit";
+                        sub.innerText = "Endre";
+
+
+                       form.append(id, klasseLabel, klasse, fagLabel, fag, tidLabel, tid, beskrivelseLabel, beskrivelse, sub)
+
+                       const slettKnapp = document.createElement("form");
+                       main.appendChild(slettKnapp);
+                       slettKnapp.action = "/api/slett";
+                       slettKnapp.method = "POST";
+                         const id_u = document.createElement("input");
+                       id_u.type = "hidden";
+                       id_u.name = "ID_undervisning";
+                       id_u.value = økt.ID_undervisning;
+                       slettKnapp.appendChild(id_u);
+
+                             const del = document.createElement("button");
+                        del.type = "submit";
+                        del.innerText = "Slett";
+                        del.style.backgroundColor = "red";
+                        slettKnapp.appendChild(del);
+                    });
+                }
+                lesUnd()
+            </script>
         </main>
         <footer>&copy; 2025 Nexatech</footer>
     </body>
