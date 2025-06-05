@@ -40,7 +40,32 @@ app.get("/registrer", (req, res) => {
 });
 
 
+app.post("/api/register", (req, res) => {
+    const {klasse, fag, tid, beskrivelse} = req.body;
+    const sql = `INSERT INTO Undervisning (Klasse, Fag, Tid, Beskrivelse)
+            VALUES (?, ?, ?, ?)`;
+    db.run (sql, [klasse, fag, tid, beskrivelse], function(err){
+        if (err) {
+            console.error("Databasefeil", err.message);
+        }
+        res.redirect("/");
+    });
+});
 
+
+app.get("/api/se", (req, res) => {
+    const sql = "SELECT * FROM Undervisning";
+
+    db.all(sql, [], (err, rows) =>{
+        if(err) {
+            console.error("Databasefeil", err.message);
+            
+        }
+        else {
+            res.json(rows);
+        }
+    });
+});
 /**
  * Rute: Håndterer innlogging
  * Sjekker epost og passord mot databasen
